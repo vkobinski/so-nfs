@@ -1,4 +1,4 @@
-use std::{fmt::format, fs::File, io::Write, process::Command, time::Instant};
+use std::{fs::File, io::Write, process::Command, time::Instant};
 
 fn main() {
     for i in 0..8 {
@@ -9,11 +9,8 @@ fn main() {
 
         for x in 0..10 {
             let now = Instant::now();
-            let _ = Command::new("cmd")
-                .args([
-                    "/C",
-                    format!("scp root@154.56.43.220:~/so/{}.txt .", i).as_str(),
-                ])
+            let _ = Command::new("sh")
+                .args(["-c", format!("cp {}.txt ~/", i).as_str()])
                 .output()
                 .expect("failed to execute process");
 
@@ -21,8 +18,8 @@ fn main() {
 
             let _ = file.write(format!("\tElapsed {} ms\n", elapsed.as_millis()).as_bytes());
 
-            let _ = Command::new("cmd")
-                .args(["/C", format!("rm {}.txt .", i).as_str()])
+            let _ = Command::new("sh")
+                .args(["-c", format!("rm ~/{}.txt", i).as_str()])
                 .output()
                 .expect("failed to execute process");
         }
